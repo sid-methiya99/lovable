@@ -1,7 +1,3 @@
-### NOTE 
-## Prisma changed its config.So you need to specifically load env variables inside prisma.config.ts 
-- Example
-```
 import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 export default defineConfig({
@@ -14,5 +10,3 @@ export default defineConfig({
     url: env("DATABASE_URL"),
   },
 });
-
-```
