@@ -1,14 +1,31 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-export default function Home() {
-  const trpc = useTRPC();
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
 
-  const { data } = useQuery(trpc.hello.queryOptions({ text: "Hello World" }));
+export default function Home() {
+  const [value, setValue] = useState("");
+
+  const trpc = useTRPC();
+  const data = useMutation(
+    trpc.invoke.mutationOptions({
+      onSuccess: () => {
+        toast.success("Background job added");
+      },
+    }),
+  );
   return (
-    <div className="text-2xl flex items-center justify-center">
-      {JSON.stringify(data, null, 2)}
+    <div className="mx-2 my-2 flex flex-col items-center justify-center">
+      <Input value={value} onChange={(e) => setValue(e.target.value)} />
+      <Button
+        disabled={data.isPending}
+        onClick={() => data.mutate({ value: value })}
+      >
+        Click to awake agent
+      </Button>
     </div>
   );
 }
