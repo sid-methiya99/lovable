@@ -19,7 +19,6 @@ export const helloWorld = inngest.createFunction(
       return sandbox.sandboxId;
     });
 
-    console.log("Control reached here");
     const codeAgent = createAgent({
       name: "code_agent",
       description: "An expert coding agent",
@@ -37,10 +36,9 @@ export const helloWorld = inngest.createFunction(
           handler: async ({ command }, { step }) => {
             return await step?.run("terminal", async () => {
               const buffers = { stdout: "", stderr: "" };
-              console.log("yessssssssssssssssssss");
               try {
-                const sandbox = getSandBox(sandBoxId);
-                const result = (await sandbox).commands.run(command, {
+                const sandbox = await getSandBox(sandBoxId);
+                const result = await sandbox.commands.run(command, {
                   onStdout: (data: string) => {
                     buffers.stdout += data;
                   },
@@ -49,7 +47,7 @@ export const helloWorld = inngest.createFunction(
                   },
                 });
 
-                return (await result).stdout;
+                return result.stdout;
               } catch (error) {
                 console.error(
                   `Command failed: ${error} \n stdout: ${buffers.stdout} \n stderr: ${buffers.stderr}`,
@@ -75,7 +73,7 @@ export const helloWorld = inngest.createFunction(
               "createOrUpdateFiles",
               async () => {
                 try {
-                  const updatedFiles = network.state.data.files || [];
+                  const updatedFiles = network.state.data.files || {};
                   const sandbox = await getSandBox(sandBoxId);
                   for (const file of files) {
                     await sandbox.files.write(file.path, file.content);

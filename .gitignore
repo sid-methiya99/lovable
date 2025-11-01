@@ -39,5 +39,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/sandox-template/nextjs/e2b.toml
+/sandbox-template/nextjs/e2b.toml
 /src/generated/prisma
