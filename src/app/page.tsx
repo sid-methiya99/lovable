@@ -6,6 +6,14 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 
+/**
+ * Renders the home UI with an input and a button that starts a background job.
+ *
+ * The input is controlled by local state; the button triggers a TRPC mutation with the input value,
+ * disables while the mutation is pending, and shows a success toast when the job is added.
+ *
+ * @returns A JSX element containing a centered input and action button that invokes the background job.
+ */
 export default function Home() {
   const [value, setValue] = useState("");
 

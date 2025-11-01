@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script runs during building the sandbox template
-# and makes sure the Next.js app is (1) running and (2) the `/` page is compiled
+# ping_server polls http://localhost:3000 until the Next.js app responds with HTTP 200, printing "Waiting for server to start..." every 20 attempts.
 function ping_server() {
 	counter=0
 	response=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000")
