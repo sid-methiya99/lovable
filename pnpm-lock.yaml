@@ -11,6 +11,9 @@ importers:
       '@e2b/cli':
         specifier: ^2.4.0
         version: 2.4.0(@types/node@20.19.24)
+      '@e2b/code-interpreter':
+        specifier: ^2.2.0
+        version: 2.2.0
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.65.0(react@19.2.0))
@@ -327,6 +330,10 @@ packages:
     resolution: {integrity: sha512-l5t7gY9jq6FMmsA1it30nIexFKEb2E6WYfDIz4xzS25OE3XBZW2HYo7eJoQ4Z4tNOMoNo4uwURIiDUyXQ+yZrw==}
     engines: {node: '>=20'}
     hasBin: true
+
+  '@e2b/code-interpreter@2.2.0':
+    resolution: {integrity: sha512-j2XIhuuV+MvjCMJbwRCL3hZjkOTv4Jk1FygI4dCwaU9PggtAW+TXhyaVzzVPZroE9fqxLfrXGqY08P06Ei7MQA==}
+    engines: {node: '>=20'}
 
   '@emnapi/core@1.6.0':
     resolution: {integrity: sha512-zq/ay+9fNIJJtJiZxdTnXS20PllcYMX3OE23ESc4HK/bdYu3cOWYVhsOhVnXALfU/uqJIxn5NBPd9z4v+SfoSg==}
@@ -5549,6 +5556,10 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
       - bluebird
+
+  '@e2b/code-interpreter@2.2.0':
+    dependencies:
+      e2b: 2.6.0
 
   '@emnapi/core@1.6.0':
     dependencies:
