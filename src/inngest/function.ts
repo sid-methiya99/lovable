@@ -9,11 +9,10 @@ import { Sandbox } from "@e2b/code-interpreter";
 import { getSandBox, lastAssistantTextMessageContent } from "./utils";
 import z from "zod";
 import { PROMPT } from "@/lib/prompt";
-import { prisma } from "@/lib/db";
 
-export const codingAgent = inngest.createFunction(
-  { id: "run-agent" },
-  { event: "test/run-agent" },
+export const helloWorld = inngest.createFunction(
+  { id: "hello-world" },
+  { event: "test/hello.world" },
   async ({ event, step }) => {
     const sandBoxId = await step.run("get-sandbox-id", async () => {
       const sandbox = await Sandbox.create("vibe-nextjs-test-sid-1");
@@ -152,23 +151,6 @@ export const codingAgent = inngest.createFunction(
       const sandbox = await getSandBox(sandBoxId);
       const host = sandbox.getHost(3000);
       return `https://${host}`;
-    });
-
-    await step.run("save-result", async () => {
-      await prisma.message.create({
-        data: {
-          content: result.state.data.summary,
-          role: "ASSITANT",
-          type: "RESULT",
-          fragment: {
-            create: {
-              sandBoxUrl: sandboxUrl,
-              title: "Fragment",
-              files: result.state.data.files,
-            },
-          },
-        },
-      });
     });
 
     return {
