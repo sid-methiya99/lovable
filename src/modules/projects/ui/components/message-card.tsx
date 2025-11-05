@@ -41,8 +41,8 @@ export const MessageCard = ({
         role={role}
         fragment={fragment}
         createdAt={createdAt}
-        isActiveFragment={false}
-        onFragmentClick={() => {}}
+        isActiveFragment={isActiveFragment}
+        onFragmentClick={onFragmentClick}
         type={type}
       />
     );
