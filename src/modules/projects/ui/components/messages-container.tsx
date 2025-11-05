@@ -4,8 +4,19 @@ import { ProjectViewProps } from "../views/project-view";
 import { MessageCard } from "./message-card";
 import { MessageForm } from "./message-form";
 import { useEffect, useRef } from "react";
+import { Fragment } from "@/generated/prisma";
+import { MessageLoading } from "./message-loading";
 
-export const MessagesContainer = ({ projectId }: ProjectViewProps) => {
+interface MessageContainerProps extends ProjectViewProps {
+  activeFragment: Fragment | null;
+  setActiveFragment: (fragment: Fragment | null) => void;
+}
+
+export const MessagesContainer = ({
+  projectId,
+  activeFragment,
+  setActiveFragment,
+}: MessageContainerProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const trpc = useTRPC();
   const { data: messages } = useSuspenseQuery(
@@ -14,12 +25,16 @@ export const MessagesContainer = ({ projectId }: ProjectViewProps) => {
 
   useEffect(() => {
     const lastAssitantMessage = messages.findLast(
-      (message) => message.role === "ASSITANT",
+      (message) => message.role === "ASSITANT" && Boolean(message.fragment),
     );
 
     if (lastAssitantMessage) {
+      setActiveFragment(lastAssitantMessage.fragment);
     }
-  }, [messages]);
+  }, [messages, setActiveFragment]);
+
+  const lastMessage = messages[messages.length - 1];
+  const isLastMessageUser = lastMessage?.role === "USER";
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView();
@@ -35,11 +50,12 @@ export const MessagesContainer = ({ projectId }: ProjectViewProps) => {
               role={message.role}
               fragment={message.fragment}
               createdAt={message.createdAt}
-              isActiveFragment={false}
-              onFragmentClick={() => {}}
+              isActiveFragment={activeFragment?.id === message.fragment?.id}
+              onFragmentClick={() => setActiveFragment(message.fragment)}
               type={message.type}
             />
           ))}
+          {isLastMessageUser && <MessageLoading />}
           <div ref={bottomRef} />
         </div>
       </div>
