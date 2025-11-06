@@ -1,6 +1,4 @@
 "use client";
-import { useTRPC } from "@/trpc/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   ResizablePanelGroup,
   ResizablePanel,
@@ -10,13 +8,13 @@ import { MessagesContainer } from "../components/messages-container";
 import { Suspense, useState } from "react";
 import { Fragment } from "@/generated/prisma";
 import { ProjectHeader } from "../components/project-header";
+import { FragmentWeb } from "../components/fragment-web";
 
 export interface ProjectViewProps {
   projectId: string;
 }
 
 export const ProjectView = ({ projectId }: ProjectViewProps) => {
-  const trpc = useTRPC();
   const [activeFragment, setActiveFragment] = useState<Fragment | null>(null);
 
   return (
@@ -40,7 +38,7 @@ export const ProjectView = ({ projectId }: ProjectViewProps) => {
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={65} minSize={50}>
-          TODO: preview
+          {!!activeFragment && <FragmentWeb data={activeFragment} />}
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
