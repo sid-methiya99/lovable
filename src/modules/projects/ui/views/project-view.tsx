@@ -13,6 +13,8 @@ import { FragmentWeb } from "../components/fragment-web";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { CodeIcon, CrownIcon, EyeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CodeView } from "@/components/code-view/";
+import { FileCollection, FileExplorer } from "@/components/file-explorer";
 
 export interface ProjectViewProps {
   projectId: string;
@@ -70,8 +72,10 @@ export const ProjectView = ({ projectId }: ProjectViewProps) => {
             <TabsContent value="preview">
               {!!activeFragment && <FragmentWeb data={activeFragment} />}
             </TabsContent>
-            <TabsContent value="code">
-              <p>Code</p>
+            <TabsContent value="code" className="min-h-0">
+              {!!activeFragment?.files && (
+                <FileExplorer files={activeFragment.files as FileCollection} />
+              )}
             </TabsContent>
           </Tabs>
         </ResizablePanel>
