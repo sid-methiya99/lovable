@@ -16,3 +16,5 @@ export default defineConfig({
 });
 
 ```
+
+## Also check each ready made prompt on homepage

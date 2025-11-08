@@ -19,6 +19,7 @@ export const MessagesContainer = ({
 }: MessageContainerProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const trpc = useTRPC();
+  const lastAssitantMessageIdRef = useRef<string | null>(null);
 
   const { data: messages } = useSuspenseQuery(
     trpc.messages.getMany.queryOptions(
@@ -28,15 +29,19 @@ export const MessagesContainer = ({
     ),
   );
 
-  // useEffect(() => {
-  //   const lastAssitantMessage = messages.findLast(
-  //     (message) => message.role === "ASSITANT" && Boolean(message.fragment),
-  //   );
-  //
-  //   if (lastAssitantMessage) {
-  //     setActiveFragment(lastAssitantMessage.fragment);
-  //   }
-  // }, [messages, setActiveFragment]);
+  useEffect(() => {
+    const lastAssitantMessage = messages.findLast(
+      (message) => message.role === "ASSITANT",
+    );
+
+    if (
+      lastAssitantMessage?.fragment &&
+      lastAssitantMessage.id !== lastAssitantMessageIdRef.current
+    ) {
+      setActiveFragment(lastAssitantMessage.fragment);
+      lastAssitantMessageIdRef.current = lastAssitantMessage.id;
+    }
+  }, [messages, setActiveFragment]);
 
   const lastMessage = messages[messages.length - 1];
   const isLastMessageUser = lastMessage?.role === "USER";

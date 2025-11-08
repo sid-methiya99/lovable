@@ -27,6 +27,18 @@ export const projectRouter = createTRPCRouter({
       }
       return projects;
     }),
+
+  getMany: baseProcedure.query(async ({ input }) => {
+    const projects = await prisma.project.findMany({});
+
+    if (!projects) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "No project found for given id",
+      });
+    }
+    return projects;
+  }),
   create: baseProcedure
     .input(
       z.object({
