@@ -13,6 +13,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { PROJECT_TEMPLATES } from "@/lib/constants";
+import { ProjectsList } from "./projects-list";
 
 const formSchema = z.object({
   value: z
@@ -141,6 +142,7 @@ export const ProjectForm = () => {
           ))}
         </div>
       </section>
+      <ProjectsList />
     </Form>
   );
 };
