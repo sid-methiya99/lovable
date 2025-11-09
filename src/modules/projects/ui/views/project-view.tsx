@@ -14,6 +14,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { CodeIcon, CrownIcon, EyeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FileCollection, FileExplorer } from "@/components/file-explorer";
+import { UserControl } from "@/components/user-control";
 
 export interface ProjectViewProps {
   projectId: string;
@@ -66,6 +67,7 @@ export const ProjectView = ({ projectId }: ProjectViewProps) => {
                     Upgrade
                   </Link>
                 </Button>
+                <UserControl />
               </div>
             </div>
             <TabsContent value="preview">
