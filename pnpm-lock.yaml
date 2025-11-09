@@ -167,6 +167,9 @@ importers:
       random-word-slugs:
         specifier: ^0.1.7
         version: 0.1.7
+      rate-limiter-flexible:
+        specifier: ^8.2.0
+        version: 8.2.0
       react:
         specifier: 19.2.0
         version: 19.2.0
@@ -4697,6 +4700,9 @@ packages:
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
+
+  rate-limiter-flexible@8.2.0:
+    resolution: {integrity: sha512-lzpvMBP6GpCJftWP90RHzhCAAPFnO3BKaE6STNc6tPsu/uF6Y7kZDczV45a4Ms/H+5G2qqPFp8kg0l8gxCxcsw==}
 
   raw-body@2.5.2:
     resolution: {integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==}
@@ -10435,6 +10441,8 @@ snapshots:
   random-word-slugs@0.1.7: {}
 
   range-parser@1.2.1: {}
+
+  rate-limiter-flexible@8.2.0: {}
 
   raw-body@2.5.2:
     dependencies:

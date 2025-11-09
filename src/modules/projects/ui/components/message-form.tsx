@@ -9,8 +9,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { Usage } from "./usage";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   value: z
@@ -23,6 +25,8 @@ const formSchema = z.object({
 export const MessageForm = ({ projectId }: ProjectViewProps) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const { data: usage } = useQuery(trpc.usage.status.queryOptions());
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,9 +43,14 @@ export const MessageForm = ({ projectId }: ProjectViewProps) => {
         queryClient.invalidateQueries(
           trpc.messages.getMany.queryOptions({ projectId: projectId }),
         );
+        queryClient.invalidateQueries(trpc.usage.status.queryOptions());
       },
       onError: (error) => {
         toast.error(error.message);
+
+        if (error.data?.code === "TOO_MANY_REQUESTS") {
+          router.push("/pricing");
+        }
       },
     }),
   );
@@ -54,13 +63,19 @@ export const MessageForm = ({ projectId }: ProjectViewProps) => {
   };
 
   const [isFocused, setIsFocused] = useState(false);
-  const showUsage = false;
+  const showUsage = !!usage;
   const isPending = createMessage.isPending;
   const formValue = form.watch("value");
   const isButtonDisabled = isPending || !formValue.trim();
 
   return (
     <Form {...form}>
+      {showUsage && (
+        <Usage
+          points={usage.remainingPoints}
+          msBeforeNext={usage.msBeforeNext}
+        />
+      )}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn(
