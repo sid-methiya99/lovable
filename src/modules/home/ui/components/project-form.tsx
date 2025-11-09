@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { PROJECT_TEMPLATES } from "@/lib/constants";
 import { ProjectsList } from "./projects-list";
+import { useClerk } from "@clerk/nextjs";
 
 const formSchema = z.object({
   value: z
@@ -26,6 +27,7 @@ export const ProjectForm = () => {
   const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const clerk = useClerk();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,6 +45,9 @@ export const ProjectForm = () => {
       },
       onError: (error) => {
         toast.error(error.message);
+        if (error.data?.code === "UNAUTHORIZED") {
+          clerk.openSignIn();
+        }
       },
     }),
   );
@@ -128,7 +133,7 @@ export const ProjectForm = () => {
             </Button>
           </div>
         </form>
-        <div className="flex-wrap justify-center gap-2.5 hidden md:flex max-w-3xl">
+        <div className="flex-wrap justify-center gap-2.5 hidden md:flex max-w-3xl mb-2">
           {PROJECT_TEMPLATES.map((template) => (
             <Button
               key={template.title}
